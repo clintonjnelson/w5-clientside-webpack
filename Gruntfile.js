@@ -69,14 +69,26 @@ module.exports = function(grunt) {
         output: {
           path: 'build/',
           file: 'bundle.js'
-        }
+        },
+        stats: {
+          colors: true
+        },
+        failOnError: false,
+        watch: true,
+        keepalive: true
       },
       test: {
         entry: __dirname + '/test/client/test.js',
         output: {
           path: 'test/client/',
           file: 'test_bundle.js'
-        }
+        },
+        stats: {
+          colors: true
+        },
+        failOnError: false,
+        watch: true,
+        keepalive: true
       }
     }
   });

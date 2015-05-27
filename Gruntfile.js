@@ -42,10 +42,10 @@ module.exports = function(grunt) {
       dev: {
         src: ['Gruntfile.js',
               'package.json',
-              '*.js',
+              // '*.js',
               'models/**/*.js',
               'routes/**/*.js',
-              'test/**/*.js'
+              'test/**/*test.js'
                ]
       },
       options: {
@@ -81,7 +81,7 @@ module.exports = function(grunt) {
         entry: __dirname + '/test/client/test.js',
         output: {
           path: 'test/client/',
-          file: 'test_bundle.js'
+          file: 'testbundle.js'
         },
         stats: {
           colors: true
@@ -94,8 +94,9 @@ module.exports = function(grunt) {
   });
 
   // Custom Task Chains
-  grunt.registerTask('test',      ['jshint:dev', 'jscs', 'mochaTest']);
-  grunt.registerTask('build:dev', ['webpack:client', 'copy:html'    ]);
-  grunt.registerTask('build',     ['build:dev'                      ]);
-  grunt.registerTask('default',   ['test', 'build'                  ]);
+  grunt.registerTask('test',       ['jshint:dev', 'jscs', 'mochaTest']);
+  grunt.registerTask('build:dev',  ['copy:html', 'webpack:client'    ]);
+  grunt.registerTask('build:test', ['copy:html', 'webpack:test'      ]);
+  grunt.registerTask('build',      ['build:dev'                      ]);
+  grunt.registerTask('default',    ['test', 'build'                  ]);
 };

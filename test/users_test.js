@@ -29,11 +29,11 @@ describe('Users', function() {
       });
     });
 
-    describe('GET for a specific user', function() {
+    describe('GET for users', function() {
       var joe;
       before(function(done) {
         chai.request('localhost:3000')
-          .get('/api/users/joe')
+          .get('/api/users')
           .end(function(err, res) {
             joe = res.body[0];
             done();
@@ -95,10 +95,10 @@ describe('Users', function() {
       // Having my POST test above triggers this to be wrong... how fix?
       it('deletes the user', function(done) {
         chai.request('localhost:3000')
-          .get('/api/users/joe')
+          .get('/api/users/' + newUser._id)
           .end(function(err, res) {
             expect(err).to.eql(null);
-            expect(res.body).to.eql([]);
+            expect(res.body).to.eql({});
             done();
           });
       });

@@ -8,24 +8,25 @@ module.exports = function(router) {
   router.use(bodyparser.json());  // api will receive JSON
 
 
-  // R: get user (see user info)
-  router.get('/users/:username', function(req, res) {
+  // R: get users
+  router.get('/users', function(req, res) {
     var username = req.params.username;  // // BODY EMPTY, PARAMS HAS: username
-    User.find({'username': username}, function(err, data) {  // lookup in db
+    User.find({}, function(err, users) {  // lookup in db
       if (err) {  // handle error - conole it, vague message user
         console.log(err);
         return res.status(500).json( {msg: 'internal server error'} );
       }
-
-      res.json(data);  // send raw data to user
+      console.log('User data is: ', users);
+      res.json(users);  // send raw data to user
     });  // look in user model
   });
 
   // C: create user
   router.post('/users', function(req, res) {
     // get passed info from req.body & use mongoose to crate a new 'Thing'
+    console.log('HIT THE POST WITH JQUERY', req.body);
     var newUser = new User(req.body);  // assumes formatting of body is proper
-    newUser.save(function(err, data) {  //
+    newUser.save(function(err, user) {  //
       // Validations
       switch(true) {
         case !!(err && err.code === 11000):
@@ -37,7 +38,7 @@ module.exports = function(router) {
           return res.status(500).json({msg: 'internal server error'});
       }
 
-      res.json(data);
+      res.json(user);
     });
   });
 
@@ -64,8 +65,9 @@ module.exports = function(router) {
   });
 
   // D: destroy user
-  router.delete('/users/:id', function(req, res) {
-    User.remove({'_id': req.params.id}, function(err, data) {
+  router.delete('/users/:id?', function(req, res) {
+    var userId = req.params.id || req.body.id;
+    User.remove({'_id': userId}, function(err, data) {
       switch(true) {
         case !!(err && err.name === 'CastError'):
           return res.json( {msg: 'invalid user'} );

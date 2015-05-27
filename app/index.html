@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clientside</title>
+</head>
+<body>
+  <h1> Hello Client </h1>
+  <p> This app is not very special - it just displays a list of users. If there are no users, it displays nothing.  </p>
+  <ul id='userlist'></ul>
+
+  <br>
+  <h4> You can make new users here: </h4>
+  <form action="#" id="newuser">
+    <label name="username">New Username:</label>
+    <input type="text" name:"username"><br>
+    <input type="submit" value="create user">
+  </form>
+
+  <h4> You can delete users here: </h4>
+  <form action="/api/users" method="DELETE">
+    User Id#: <input type="text" name:"id"><br>
+    <input type="submit" value="delete user">
+  </form>
+
+  <script src='bundle.js'></script>
+</body>
+</html>

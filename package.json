@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/clintonjnelson/w2-rest-api",
   "devDependencies": {
+    "angular": "^1.4.0",
     "chai": "^2.3.0",
     "chai-http": "^1.0.0",
     "grunt": "^0.4.5",

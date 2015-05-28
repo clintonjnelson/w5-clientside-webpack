@@ -2,26 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clientside</title>
+  <title> Single Resource Angular App </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body>
-  <h1> Hello Client </h1>
-  <p> This app is not very special - it just displays a list of users. If there are no users, it displays nothing.  </p>
-  <ul id='userlist'></ul>
+  <br><br><br>
 
-  <br>
-  <h4> You can make new users here: </h4>
-  <form action="#" id="newuser">
-    <label name="username">New Username:</label>
-    <input type="text" name:"username"><br>
-    <input type="submit" value="create user">
-  </form>
+  <main class="panel panel-info col-sm-8 col-sm-offset-1">
+    <summary class="panel-heading">
+      <h3 class="panel-title">Users:</h3>
+    </summary>
+    <details class="panel-body">
+      Panel content
+    </details>
+  </main>
 
-  <h4> You can delete users here: </h4>
-  <form action="/api/users" method="DELETE">
-    User Id#: <input type="text" name:"id"><br>
-    <input type="submit" value="delete user">
-  </form>
+  <section class="panel panel-success col-sm-8 col-sm-offset-1">
+    <summary class="panel-heading">
+      <h3 class="panel-title">Panel title</h3>
+    </summary>
+    <details class="panel-body">
+      Panel content
+    </details>
+  </section>
+
+  <aside class="panel panel-danger col-sm-8 col-sm-offset-1">
+    <summary class="panel-heading">
+      <h3 class="panel-title">Panel title</h3>
+    </summary>
+    <details class="panel-body">
+      Panel content
+    </details>
+  </aside>
 
   <script src='bundle.js'></script>
 </body>

@@ -16,7 +16,6 @@ module.exports = function(router) {
         console.log(err);
         return res.status(500).json( {msg: 'internal server error'} );
       }
-      console.log('User data is: ', users);
       res.json(users);  // send raw data to user
     });  // look in user model
   });
@@ -24,7 +23,6 @@ module.exports = function(router) {
   // C: create user
   router.post('/users', function(req, res) {
     // get passed info from req.body & use mongoose to crate a new 'Thing'
-    console.log('HIT THE POST WITH JQUERY', req.body);
     var newUser = new User(req.body);  // assumes formatting of body is proper
     newUser.save(function(err, user) {  //
       // Validations
@@ -43,10 +41,9 @@ module.exports = function(router) {
   });
 
   // U: update user
-  router.put('/users/:id', function(req, res) {
+  router.patch('/users/:id', function(req, res) {
     var updatedUser = req.body;
     delete updatedUser._id;   // pass option for props to ignore in update
-
     User.update({'_id': req.params.id}, updatedUser, function(err, data) {
       switch(true) {
         case !!(err && err.code === 11000):
@@ -59,7 +56,6 @@ module.exports = function(router) {
           console.log(err);
           return res.status(500).json({msg: 'internal server error'});
       }
-
       res.json({msg: 'user updated'});
     });
   });
@@ -77,7 +73,7 @@ module.exports = function(router) {
       }
 
       // To get a report back on outcome, check data.result.n
-      res.json({msg: (data.result.n ? 'user removed' : 'user could not be removed')});  //returns 0 or more
+      res.json({success: (data.result.n ? true : false)});  //returns 0 or more
     });
   });
 };

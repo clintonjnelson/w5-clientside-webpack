@@ -2,26 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Clientside</title>
+  <title> Single Resource Angular App </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
-<body>
-  <h1> Hello Client </h1>
-  <p> This app is not very special - it just displays a list of users. If there are no users, it displays nothing.  </p>
-  <ul id='userlist'></ul>
+<body data-ng-app="usersApp">
+  <br><br><br>
 
-  <br>
-  <h4> You can make new users here: </h4>
-  <form action="#" id="newuser">
-    <label name="username">New Username:</label>
-    <input type="text" name:"username"><br>
-    <input type="submit" value="create user">
-  </form>
+  <main data-ng-controller="usersController" data-ng-init="getUsers()">
+    <aside data-ng-if="errors.length > 0">
+      <div class="row well">
+        <ul data-ng-repeat="error in errors">
+          <strong>Error:</strong>
+          <li> <strong>{{error}}</strong> </li>
+        </ul>
+        <a href="#" class="close" data-ng-click="clearErrors()">&times;</a>
+      </div>
+    </aside>
 
-  <h4> You can delete users here: </h4>
-  <form action="/api/users" method="DELETE">
-    User Id#: <input type="text" name:"id"><br>
-    <input type="submit" value="delete user">
-  </form>
+    <section class="panel panel-info col-sm-8 col-sm-offset-1">
+      <summary class="panel-heading">
+        <h3 class="panel-title">Users:</h3>
+      </summary>
+      <article class="panel-body">
+        <ul data-ng-repeat="user in users">
+          <li>{{ user.username }}
+            <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="editUser(user)">
+              change stuff
+            </button>
+            <button class="btn btn-xs btn-danger text-center" data-ng-click="destroyUser(user)">
+              annihilate
+            </button>
+            <div data-ng-if="user.editing" >
+              <form action="" name={{'editing'+user._id}}>
+                <input type="text" data-ng-model="user.username">
+                <button type="submit" class="btn btn-xs btn-info" data-ng-click="updateUser(user)">
+                  save stuff
+                </button>
+                <button data-ng-click="cancelEdit(user)">cancel</button>
+              </form>
+            </div data>
+          </li>
+        </ul>
+
+      </article>
+    </section>
+
+    <section class="panel panel-success col-sm-8 col-sm-offset-1">
+      <summary class="panel-heading">
+        <h3 class="panel-title">Add User</h3>
+      </summary>
+      <article class="panel-body">
+        <form name="newUserForm" data-ng-submit="createUser()">
+          <input type="text" required data-ng-model="newUser.username">
+          <button type="submit" data-ng-disabled="newUserForm.$invalid">
+            create user
+          </button>
+        </form>
+      </article>
+    </section>
+  </main>
 
   <script src='bundle.js'></script>
 </body>

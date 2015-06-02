@@ -42,7 +42,9 @@ module.exports = function(grunt) {
       dev: {
         src: ['Gruntfile.js',
               'package.json',
-              // '*.js',
+              '!/build/bundle.js',
+              '!/test/client/bundle.js',
+              '*.js',
               'models/**/*.js',
               'routes/**/*.js',
               'test/**/*test.js'

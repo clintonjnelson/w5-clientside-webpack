@@ -8,7 +8,7 @@ var mongoose = require('mongoose');       // needed to working with server
 var User = require('../models/User.js');  // bring in model constructor to test
 
 // Point to db via
-process.env.MONGOLAB_URI = 'mongodb://localhost/user_development';
+process.env.MONGOLAB_URI = 'mongodb://localhost/users_test';
 
 // Start server for testing
 require('../server.js');
@@ -70,7 +70,7 @@ describe('Users', function() {
       var response;
       before(function(done) {
         chai.request('localhost:3000')
-          .put('/api/users/' + newUser.emitted.fulfill[0]._id)
+          .patch('/api/users/' + newUser.emitted.fulfill[0]._id)
           .send({email: 'joe@newemail.com'})
           .end(function(err, res) {
             response = res.body;
@@ -103,7 +103,7 @@ describe('Users', function() {
           });
       });
       it('responds with the message "user removed"', function() {
-        expect(response.msg).to.eql('user removed');
+        expect(response.success).to.eql(true);
       });
     });
   });
@@ -151,7 +151,7 @@ describe('Users', function() {
     describe('PUT', function() {
       it('returns the error message in the body', function(done) {
         chai.request('localhost:3000')
-          .put('/api/users/123456789wrong')
+          .patch('/api/users/123456789wrong')
           .send({username: 'thiswillfail'})
           .end(function(err, res) {
             expect(err).to.eq(null);

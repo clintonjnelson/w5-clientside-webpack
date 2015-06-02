@@ -22,13 +22,15 @@ module.exports = function(app) {
     };
 
     $scope.createUser = function() {
-      $scope.users.push($scope.newUser);  // add user before successful
-      $http.post('/api/users', $scope.newUser)
+      var tempUser = angular.copy($scope.newUser); // make temp user in case $scope.newUser gets overwritten
+      $scope.users.push(tempUser);                  // add user before successful
+      $http.post('/api/users', tempUser)            // send data to make new user
         .success(function(user) {
+          $scope.users.splice($scope.users.indexOf(tempUser), 1, user);   // once created, replace temp user with final
           $scope.newUser = null;    // reset input field
         })
         .error(function(err) {
-          $scope.users.splice($scope.users.indexOf($scope.newUser), 1);  // remove added user that didn't work
+          $scope.users.splice($scope.users.indexOf(tempUser), 1);  // remove added user that didn't work
           console.log('Error creating user: ', err);
           $scope.errors.push("could not create new user");
         });

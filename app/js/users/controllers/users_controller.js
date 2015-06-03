@@ -37,10 +37,16 @@ module.exports = function(app) {
     };
 
     $scope.destroyUser = function(user) {
-      $scope.users.splice($scope.users.indexOf(user), 1);
+      var delUserTemp = angular.copy(user);
+      var indTemp = $scope.users.indexOf(user);
+      $scope.users.splice(indTemp, 1);
       $http.delete('/api/users/' + user._id)
         .success(function(data) {
-          if (!data.success) { return console.log('User could not be removed'); }
+          if (!data.success) {
+            $scope.users.splice(indTemp, 0, delUserTemp);
+            $scope.errors.push('could not delete user');
+            return console.log('User could not be removed');
+          }
         })
         .error(function(err) {
           console.log('Server error removing user: ', err);
@@ -50,12 +56,12 @@ module.exports = function(app) {
 
     $scope.editUser = function(user) {
       user.editing = true;
-      user.temp = angular.copy(user.username);
+      user.temp = angular.copy(user);
     };
 
     $scope.cancelEdit = function(user) {
       user.editing = false;
-      user.username = user.temp;
+      user = user.temp;
       user.temp = null;
     }
 
@@ -64,12 +70,14 @@ module.exports = function(app) {
       $http.patch(('/api/users/' + user._id), user)
         .success(function() {
           console.log('update successful');
+          delete user.temp;
         })
         .error(function(err) {
-          console.log('err');
-          $scope.errors.push('could not update user')
-          user.username = user.temp;
-        })
+          $scope.errors.push('could not update user');
+          $scope.users.splice($scope.users.indexOf(user), 1, user.temp);
+          delete user.temp;
+          console.log(err);
+        });
     };
 
     $scope.clearErrors = function() {

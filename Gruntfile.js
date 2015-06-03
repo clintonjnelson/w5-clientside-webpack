@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy'   );
   grunt.loadNpmTasks('grunt-contrib-jshint' );
   grunt.loadNpmTasks('grunt-jscs'           );
+  grunt.loadNpmTasks('grunt-karma'          );
   grunt.loadNpmTasks('grunt-mocha-test'     );
   grunt.loadNpmTasks('grunt-webpack'        );
 
@@ -42,16 +43,23 @@ module.exports = function(grunt) {
       dev: {
         src: ['Gruntfile.js',
               'package.json',
-              '!/build/bundle.js',
-              '!/test/client/bundle.js',
-              '*.js',
+              '!test/karma_tests/simple_test.js',
+              '!test/karma_tests/users_controller_test.js',
               'models/**/*.js',
               'routes/**/*.js',
               'test/**/*test.js'
                ]
       },
       options: {
-        jshintrc: true
+        jshintrc: true,
+         '-W079': true,
+         ignores: ['*bundle.js'],
+         verbose: true
+      }
+    },
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
       }
     },
     mochaTest: {
@@ -62,7 +70,7 @@ module.exports = function(grunt) {
           quiet: false,
           clearRequireCache: false
         },
-        src: ['test/**/*_test.js']
+        src: ['test/mocha_tests/*_test.js']
       }
     },
     webpack: {
@@ -78,6 +86,13 @@ module.exports = function(grunt) {
         failOnError: false,
         watch: true,
         keepalive: true
+      },
+      karma_test: {
+        entry: __dirname + '/test/karma_tests/test_entry.js',
+        output: {
+          path: 'test/karma_tests',
+          file: 'bundle.js'
+        }
       },
       test: {
         entry: __dirname + '/test/client/test.js',
@@ -96,9 +111,10 @@ module.exports = function(grunt) {
   });
 
   // Custom Task Chains
-  grunt.registerTask('test',       ['jshint:dev', 'jscs', 'mochaTest']);
-  grunt.registerTask('build:dev',  ['copy:html', 'webpack:client'    ]);
-  grunt.registerTask('build:test', ['copy:html', 'webpack:test'      ]);
-  grunt.registerTask('build',      ['build:dev'                      ]);
-  grunt.registerTask('default',    ['test', 'build'                  ]);
+  grunt.registerTask('test',        ['jshint:dev', 'jscs', 'mochaTest' ]);
+  grunt.registerTask('build:dev',   ['copy:html', 'webpack:client'     ]);
+  grunt.registerTask('build:test',  ['copy:html', 'webpack:test'       ]);
+  grunt.registerTask('karmatest',   ['webpack:karma_test', 'karma'     ]);
+  grunt.registerTask('build',       ['build:dev'                       ]);
+  grunt.registerTask('default',     ['test', 'build'                   ]);
 };

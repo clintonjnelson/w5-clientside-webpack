@@ -1,17 +1,18 @@
+/*jshint -W079 */
 'use strict';
 
-var chai = require('chai');               // needed for should/expect assertions
-var chaiHttp = require('chai-http');      // needed for requests
+var chai = require('chai'          );  // needed for should/expect assertions
+var chaiHttp = require('chai-http');  // needed for requests
 var expect = chai.expect;
 chai.use(chaiHttp);                       // tell chai to use chai-http
-var mongoose = require('mongoose');       // needed to working with server
-var User = require('../models/User.js');  // bring in model constructor to test
+var mongoose = require('mongoose'     );  // needed to working with server
+var User = require('../../models/User.js');  // bring in model constructor to test
 
 // Point to db via
 process.env.MONGOLAB_URI = 'mongodb://localhost/users_test';
 
 // Start server for testing
-require('../server.js');
+require('../../server.js');
 
 describe('Users', function() {
   describe('with existing user', function() {
@@ -173,30 +174,3 @@ describe('Users', function() {
     });
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

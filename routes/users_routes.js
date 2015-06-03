@@ -47,11 +47,11 @@ module.exports = function(router) {
     User.update({'_id': req.params.id}, updatedUser, function(err, data) {
       switch(true) {
         case !!(err && err.code === 11000):
-          return res.json({msg: 'username already exists - please try a different username'});
+          return res.status(500).json({msg: 'username already exists - please try a different username'});
         case !!(err && err.username):
-          return res.json( {msg: err.username.message.replace("Path", '')} );
+          return res.status(500).json( {msg: err.username.message.replace("Path", '')} );
         case !!(err && err.name === 'CastError'):
-          return res.json( {msg: 'invalid user'} );
+          return res.status(500).json( {msg: 'invalid user'} );
         case !!err:
           console.log(err);
           return res.status(500).json({msg: 'internal server error'});

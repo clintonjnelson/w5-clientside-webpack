@@ -1,5 +1,6 @@
 {
   "jasmine": true,
   "node": true,
-  "mocha": true
+  "mocha": true,
+  "predef": ["angular"]
 }

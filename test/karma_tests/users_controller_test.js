@@ -14,7 +14,7 @@ describe('client-side users_controller', function() {
   beforeEach(angular.mock.module('usersApp'));
   // setup a new scope & controller constructor
   beforeEach(angular.mock.inject(function($rootScope, $controller) {
-    $scope = $rootScope.$new();            // inject passes root scope
+    $scope                 = $rootScope.$new();            // inject passes root scope
     $ControllerConstructor = $controller; // inject passes callback a constructor
   }));
 
@@ -108,7 +108,7 @@ describe('client-side users_controller', function() {
         $httpBackend.flush();
       });
       it('keeps the user updates if successful', function() {
-        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'}
+        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'};
         $scope.users.push(modifiedUser);
         $scope.users[0].temp = existingUser;   // mimic editUser - set temp var
         $httpBackend.expectPATCH('/api/users/' + existingUser._id)
@@ -119,7 +119,7 @@ describe('client-side users_controller', function() {
         expect($scope.users[0].email   ).toBe('magic@example.com');
       });
       it('sets the user back if updates were not successful', function() {
-        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'}
+        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'};
         $scope.users.push(modifiedUser);
         $scope.users[0].temp = existingUser;   // mimic editUser - set temp var
         $httpBackend.expectPATCH('/api/users/' + existingUser._id)
@@ -130,7 +130,7 @@ describe('client-side users_controller', function() {
         expect($scope.users[0].email   ).toBe('unicorn@example.com');
       });
       it('sets the error if unsuccessful', function() {
-        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'}
+        var modifiedUser = {_id: '1', username: 'magic', email: 'magic@example.com', password: 'foobar'};
         $scope.users.push(modifiedUser);
         $httpBackend.expectPATCH('/api/users/' + existingUser._id)
           .respond(500, {msg: 'internal server error'});

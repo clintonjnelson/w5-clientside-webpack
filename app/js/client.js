@@ -2,13 +2,21 @@
 
 require('angular/angular');
 
+///// App
 var usersApp = angular.module('usersApp', []);
+
+//// Services
+require('./services/rest_resource.js')(usersApp);
 
 
 // Load controllers & pass in app for loading into
 // OLD way: usersApp.controller('usersController', ['$scope', usersController]);
 // NEW way: (do that in the module)
+//// Controllers
 require('./users/controllers/users_controller.js')(usersApp);
+
+
+//// Directives
 
 
 

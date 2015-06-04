@@ -1,4 +1,5 @@
 'use strict';
+// simple static NON-replace directive
 
 module.exports = function(app) {
   // use app to create new named directive

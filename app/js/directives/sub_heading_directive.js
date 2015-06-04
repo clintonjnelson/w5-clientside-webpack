@@ -4,9 +4,9 @@
 module.exports = function(app) {
   app.directive('subHeadingDirective', function() {
     return {
-      restrict: 'AE',
-      replace: true,
-      templateUrl: 'templates/sub_heading.html' // relative to APP folder
+      restrict:     'AE',
+      replace:      true,
+      templateUrl:  'templates/sub_heading.html' // relative to APP folder
     };
   });
 };

@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.directive('mainHeadingDirective', function() {
     return {
       restrict: 'AE',
-      replace: false,
+      replace:  false,
       template: '<h1>Awesome H1 Heading Directive (non-replace)</h1>'
     };
   });

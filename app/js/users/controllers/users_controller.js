@@ -66,7 +66,7 @@ module.exports = function(app) {
           $scope.errors.push('could not delete user');
           console.log('User could not be removed');
       });
-      // REFACTOR OUT VIA SERVICE
+      // REFACTOR THIS OUT VIA SERVICE
       // $http.delete('/api/users/' + user._id)
       //   .success(function(data) {
       //     if (!data.success) {
@@ -104,6 +104,7 @@ module.exports = function(app) {
         delete user.temp;
         console.log('update successful');
       });
+      // REFACTOR THIS OUT VIA SERVICE
       // $http.patch(('/api/users/' + user._id), user)
       //   .success(function() {
       //     console.log('update successful');

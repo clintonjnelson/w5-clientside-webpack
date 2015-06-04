@@ -29,7 +29,8 @@ describe('client-side users_controller', function() {
 
   describe('with REST Interactions', function() {
     beforeEach(angular.mock.inject(function(_$httpBackend_){
-      $httpBackend = _$httpBackend_;  // make backend mock
+      $httpBackend = _$httpBackend_;    // make backend mock
+      $httpBackend.resetExpectations(); // avoid fallthru
       // make controller for testing
       this.usersController = $ControllerConstructor('usersController', {$scope: $scope});
     }));

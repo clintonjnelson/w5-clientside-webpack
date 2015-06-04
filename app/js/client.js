@@ -17,7 +17,7 @@ require('./users/controllers/users_controller.js')(usersApp);
 
 
 //// Directives
-
+require('./directives/page_title_directive.js')(usersApp);
 
 
 

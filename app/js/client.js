@@ -17,10 +17,11 @@ require('./users/controllers/users_controller.js')(usersApp);
 
 
 //// Directives
-require('./directives/page_title_directive.js'  )(usersApp);
-require('./directives/main_heading_directive.js')(usersApp);
-require('./directives/sub_heading_directive.js' )(usersApp);
-require('./directives/users_form_directive.js'  )(usersApp);
+require('./directives/page_title_directive.js'        )(usersApp);
+require('./directives/main_heading_directive.js'      )(usersApp);
+require('./directives/sub_heading_directive.js'       )(usersApp);
+require('./directives/users_form_directive.js'        )(usersApp);
+require('./directives/delete_user_button_directive.js')(usersApp);
 
 
 

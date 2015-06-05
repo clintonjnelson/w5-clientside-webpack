@@ -27,17 +27,17 @@ module.exports = function(app) {
         // });
     };
 
-    $scope.createUser = function() {
-      var tempUser = angular.copy($scope.newUser); // make temp user in case $scope.newUser gets overwritten
+    $scope.createUser = function(user) {
+      var tempUser = angular.copy(user); // make temp user in case user gets overwritten
       $scope.users.push(tempUser);                  // add user before successful
-      Users.create(tempUser, function(err, user){
+      Users.create(tempUser, function(err, data){
         if (err) {
           $scope.users.splice($scope.users.indexOf(tempUser), 1);  // remove added user that didn't work
           console.log('Error creating user: ', err);
           return $scope.errors.push("could not create new user");
         }
-          $scope.users.splice($scope.users.indexOf(tempUser), 1, user);   // once created, replace temp user with final
-          $scope.newUser = null;    // reset input field
+          $scope.users.splice($scope.users.indexOf(tempUser), 1, data);   // once created, replace temp user with final
+          user.username = '';    // reset input field
       });
       // REFECTOR OUT VIA SERVICE
       // $http.post('/api/users', tempUser)            // send data to make new user
@@ -57,14 +57,12 @@ module.exports = function(app) {
       var indTemp = $scope.users.indexOf(user);
       $scope.users.splice(indTemp, 1);
       Users.destroy(user, function(err, data) {
-          if (!data.success) {
+          if(err || !data.success) {
             $scope.users.splice(indTemp, 0, delUserTemp);
-            $scope.errors.push("could not delete user");
-            return console.log('Server error removing user: ', err);
+            $scope.errors.push('could not delete user');
+            console.log('User could not be removed');
+            if(err) {return console.log('Server error removing user: ', err);}
           }
-          $scope.users.splice(indTemp, 0, delUserTemp);
-          $scope.errors.push('could not delete user');
-          console.log('User could not be removed');
       });
       // REFACTOR THIS OUT VIA SERVICE
       // $http.delete('/api/users/' + user._id)
@@ -90,7 +88,7 @@ module.exports = function(app) {
       user.editing = false;
       user = user.temp;
       user.temp = null;
-    }
+    };
 
     $scope.updateUser = function(user) {
       user.editing = false;

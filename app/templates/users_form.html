@@ -1,6 +1,7 @@
-<form name="newUserForm" data-ng-submit="createUser()">
-  <input type="text" required data-ng-model="newUser.username">
-  <button type="submit" data-ng-disabled="newUserForm.$invalid">
-    create user
+<form name="userForm" data-ng-submit="saveUser({user: user})">
+  <label for="username">{{labelText}}</label>
+  <input type="text" id='username' required data-ng-model="user.username">
+  <button type="submit" data-ng-disabled="userForm.$invalid">
+    {{buttonText}}
   </button>
 </form>

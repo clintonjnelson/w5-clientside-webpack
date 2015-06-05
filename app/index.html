@@ -31,9 +31,7 @@
             <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="editUser(user)">
               change stuff
             </button>
-            <button class="btn btn-xs btn-danger text-center" data-ng-click="destroyUser(user)">
-              annihilate
-            </button>
+            <div data-delete-user-button-directive></div>
             <div data-ng-if="user.editing" >
               <form action="" name={{'editing'+user._id}}>
                 <input type="text" data-ng-model="user.username">
@@ -54,7 +52,11 @@
         <h3 class="panel-title">Add User</h3>
       </summary>
       <article class="panel-body">
-        <div data-users-form-directive></div>
+        <div data-users-form-directive
+             data-save-user="createUser(user)"
+             data-button-text="'create user'"
+             data-label-text="Username:">
+        </div>
       </article>
     </section>
   </main>

@@ -1,7 +1,7 @@
-<form name="userForm" data-ng-submit="saveUser({user: user})">
+<form name="{{formName}}" data-ng-submit="saveUser({user: user})">
   <label for="username">{{labelText}}</label>
   <input type="text" id='username' required data-ng-model="user.username">
-  <button type="submit" data-ng-disabled="userForm.$invalid">
+  <button type="submit" data-ng-disabled="{{formName + '.$invalid'}}">
     {{buttonText}}
   </button>
 </form>

@@ -79,18 +79,34 @@ module.exports = function(app) {
       //   });
     };
 
-    $scope.editUser = function(user) {
-      user.editing = true;
-      user.temp = angular.copy(user);
-    };
+    // $scope.editUser = function(user) {
+    //   console.log('EDITING USER. USER IS: ', user);
+    //   user.editing = true;
+    //   user.temp = angular.copy(user);
+    // };
 
-    $scope.cancelEdit = function(user) {
-      user.editing = false;
-      user = user.temp;
-      user.temp = null;
-    };
+    // $scope.cancelEdit = function(user) {
+    //   user.editing = false;
+    //   user = user.temp;
+    //   user.temp = null;
+    // };
+
+    // Refactored Edit/Cancel into Toggle
+    $scope.toggleEdit = function(user) {
+      console.log('Editing User: ', user);
+      if (!user.editing) {
+        user.editing = true;
+        user.temp = angular.copy(user);
+      } else {
+        user.username = user.temp.username;
+        console.log('Editing User: ', user);
+        user.temp = null;
+        user.editing = false;
+      }
+    }
 
     $scope.updateUser = function(user) {
+      console.log('USER IN UPDATE-USER IS: ', user);
       user.editing = false;
       Users.update(user, function(err, data) {
         if (err) {

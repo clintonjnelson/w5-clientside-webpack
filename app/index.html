@@ -28,18 +28,25 @@
       <article class="panel-body">
         <ul data-ng-repeat="user in users">
           <li>{{ user.username }}
-            <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="editUser(user)">
+            <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="toggleEdit(user)">
               change stuff
             </button>
             <div data-delete-user-button-directive></div>
             <div data-ng-if="user.editing" >
-              <form action="" name={{'editing'+user._id}}>
+              <div data-users-form-directive
+                   data-user="user"
+                   data-save-user="updateUser(user)"
+                   data-button-text="'save stuff'"
+                   data-label-text="Username:"
+                   data-form-name="'editing' + user.id">
+              </div>
+              <button data-ng-click="toggleEdit(user)">cancel</button>
+              <!-- <form action="" name={{'editing'+user._id}}>
                 <input type="text" data-ng-model="user.username">
                 <button type="submit" class="btn btn-xs btn-info" data-ng-click="updateUser(user)">
                   save stuff
                 </button>
-                <button data-ng-click="cancelEdit(user)">cancel</button>
-              </form>
+              </form> -->
             </div data>
           </li>
         </ul>
@@ -53,9 +60,11 @@
       </summary>
       <article class="panel-body">
         <div data-users-form-directive
+             data-user="user"
              data-save-user="createUser(user)"
              data-button-text="'create user'"
-             data-label-text="Username:">
+             data-label-text="Username:"
+             data-form-name="'newUser'">
         </div>
       </article>
     </section>

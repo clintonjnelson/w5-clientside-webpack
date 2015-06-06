@@ -10,7 +10,9 @@ module.exports = function(app) {
       scope: {
         saveUser:   '&',    // function name match data-save-user='myFunc(user)'
         buttonText: '=',    // processed as literal js, data as reference
-        labelText:  '@'    // passing as string
+        labelText:  '@',    // passing as string
+        formName:   '=',    // name the form... use js
+        user:       '='
       }
     };
   });

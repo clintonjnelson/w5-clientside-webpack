@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title> Single Resource Angular App </title>
+  <div data-page-title-directive></div>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 </head>
 <body data-ng-app="usersApp">
   <br><br><br>
 
+  <section data-main-heading-directive></section>
   <main data-ng-controller="usersController" data-ng-init="getUsers()">
     <aside data-ng-if="errors.length > 0">
       <div class="row well">
@@ -19,6 +20,7 @@
       </div>
     </aside>
 
+    <div data-sub-heading-directive></div>
     <section class="panel panel-info col-sm-8 col-sm-offset-1">
       <summary class="panel-heading">
         <h3 class="panel-title">Users:</h3>
@@ -26,20 +28,25 @@
       <article class="panel-body">
         <ul data-ng-repeat="user in users">
           <li>{{ user.username }}
-            <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="editUser(user)">
+            <button class="btn btn-xs btn-info text-center" data-ng-if="!user.editing" data-ng-click="toggleEdit(user)">
               change stuff
             </button>
-            <button class="btn btn-xs btn-danger text-center" data-ng-click="destroyUser(user)">
-              annihilate
-            </button>
+            <div data-delete-user-button-directive></div>
             <div data-ng-if="user.editing" >
-              <form action="" name={{'editing'+user._id}}>
+              <div data-users-form-directive
+                   data-user="user"
+                   data-save-user="updateUser(user)"
+                   data-button-text="'save stuff'"
+                   data-label-text="Username:"
+                   data-form-name="'editing' + user.id">
+              </div>
+              <button data-ng-click="toggleEdit(user)">cancel</button>
+              <!-- <form action="" name={{'editing'+user._id}}>
                 <input type="text" data-ng-model="user.username">
                 <button type="submit" class="btn btn-xs btn-info" data-ng-click="updateUser(user)">
                   save stuff
                 </button>
-                <button data-ng-click="cancelEdit(user)">cancel</button>
-              </form>
+              </form> -->
             </div data>
           </li>
         </ul>
@@ -52,12 +59,13 @@
         <h3 class="panel-title">Add User</h3>
       </summary>
       <article class="panel-body">
-        <form name="newUserForm" data-ng-submit="createUser()">
-          <input type="text" required data-ng-model="newUser.username">
-          <button type="submit" data-ng-disabled="newUserForm.$invalid">
-            create user
-          </button>
-        </form>
+        <div data-users-form-directive
+             data-user="user"
+             data-save-user="createUser(user)"
+             data-button-text="'create user'"
+             data-label-text="Username:"
+             data-form-name="'newUser'">
+        </div>
       </article>
     </section>
   </main>

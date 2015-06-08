@@ -1,0 +1,19 @@
+<section data-ng-controller="authController">
+  <form data-ng-submit="authSubmit(user)">
+    <h3>Create User</h3>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" data-ng-model="user.username">
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" data-ng-model="user.email">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" data-ng-model="user.password">
+
+    <label for="password_confirm">Password Confirmation:</label>
+    <input type="password" id="password_confirm" data-ng-model="user.password_confirmation">
+
+    <button type="submit" class="btn btn-sm btn-primary"> create user </button>
+  </form>
+</section>

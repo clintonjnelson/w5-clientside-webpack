@@ -4,7 +4,11 @@
 module.exports = function(app) {
   // Pass in $scope for view/controller interaction AND $http for hitting server
   // $scope is a service
-  app.controller('usersController', ['$scope', 'RESTResource', function($scope, RESTResource) {
+  app.controller('usersController', ['$scope', 'RESTResource', 'auth', '$location', function($scope, RESTResource, auth, $location) {
+    // redirect to signin if not signed in
+    if (!auth.isSignedIn()) { $location.path('/signin'); }
+
+
     var Users = RESTResource('users');
     // make a variable to share with view
     $scope.users  = [];

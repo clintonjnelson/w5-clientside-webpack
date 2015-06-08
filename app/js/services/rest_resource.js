@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function(app) {
+  //// Helper/Handler Methods OUTSIDE the Final Factory Method Below
+  //// These RETURN a function loaded with callback
 
   // return varying loaded versions of helper
   var handleSuccess = function(callback) {
@@ -17,9 +19,13 @@ module.exports = function(app) {
   };
 
   // create named factory with $http dependency injected for use
-  app.factory('RESTResource', ['$http', function($http){
+  app.factory('RESTResource', ['$http', '$cookies', function($http, $cookies){
     // load library with resource
     return function(resourceName) {
+      // Get the cookie & set it in header before hitting the SB
+      var eat = $cookies.get('eat');              // get cookie from storage
+      $http.defaults.headers.common['eat'] = eat; // put it in header
+
       // return library. Inject helper functions into before returning.
       return {
         // show: ,

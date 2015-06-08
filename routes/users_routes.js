@@ -1,7 +1,8 @@
 'use strict';
 
-var User = require('../models/User'); // Require in model
 var bodyparser = require('body-parser');
+var eatAuth    = require('../lib/eat_auth.js')(process.env.AUTH_SECRET);
+var User       = require('../models/User'); // Require in model
 
 // setup function to export; takes express router
 module.exports = function(router) {
@@ -9,7 +10,7 @@ module.exports = function(router) {
 
 
   // R: get users
-  router.get('/users', function(req, res) {
+  router.get('/users', eatAuth, function(req, res) {
     var username = req.params.username;  // // BODY EMPTY, PARAMS HAS: username
     User.find({}, function(err, users) {  // lookup in db
       if (err) {  // handle error - conole it, vague message user
@@ -23,25 +24,40 @@ module.exports = function(router) {
   // C: create user
   router.post('/users', function(req, res) {
     // get passed info from req.body & use mongoose to crate a new 'Thing'
-    var newUser = new User(req.body);  // assumes formatting of body is proper
-    newUser.save(function(err, user) {  //
-      // Validations
-      switch(true) {
-        case !!(err && err.code === 11000):
-          return res.json({msg: 'username already exists - please try a different username'});
-        case !!(err && err.errors.username):
-          return res.json( {msg: err.errors.username.message.replace("Path", '')});
-        case !!err:
-          console.log("INTERNAL SERVER ERROR IS:", err.errors.username.message);
-          return res.status(500).json({msg: 'internal server error'});
-      }
+    var newUser = new User({  // Explicitly populate to avoid exploit
+      username: req.body.username,
+      email:    req.body.email
+    });
 
-      res.json(user);
+    newUser.generateHash(req.body.password, function(err, hash) {
+      if (err) { return res.status(500).json({ error: true }); }
+      newUser.basic.password = hash;
+
+      newUser.save(function(err, user) {  //
+        // Validations
+        switch(true) {
+          case !!(err && err.code === 11000):
+            return res.json({msg: 'username already exists - please try a different username'});
+          case !!(err && err.errors.username):
+            return res.json( {msg: err.errors.username.message.replace("Path", '')});
+          case !!err:
+            console.log("INTERNAL SERVER ERROR IS:", err);
+            return res.status(500).json({msg: 'internal server error'});
+        }
+
+        user.generateToken(process.env.AUTH_SECRET, function(err, eat) {
+          if(err) {
+            console.log(err);
+            return res.status(500).json({ error: 'login' });
+          }
+          res.json({ eat: eat });
+        });
+      });
     });
   });
 
   // U: update user
-  router.patch('/users/:id', function(req, res) {
+  router.patch('/users/:id', eatAuth, function(req, res) {
     var updatedUser = req.body;
     delete updatedUser._id;   // pass option for props to ignore in update
     User.update({'_id': req.params.id}, updatedUser, function(err, data) {
@@ -61,7 +77,7 @@ module.exports = function(router) {
   });
 
   // D: destroy user
-  router.delete('/users/:id?', function(req, res) {
+  router.delete('/users/:id?', eatAuth, function(req, res) {
     var userId = req.params.id || req.body.id;
     User.remove({'_id': userId}, function(err, data) {
       switch(true) {

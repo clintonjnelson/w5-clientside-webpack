@@ -1,20 +1,23 @@
 'use strict';
 
 require('angular/angular');
+require('angular-base64' );
+require('angular-cookies');
+require('angular-route'  );
 
-///// App
-var usersApp = angular.module('usersApp', []);
+
+//// App & DI's
+  // ngRoute gives access to $routeProvider
+var usersApp = angular.module('usersApp', ['ngRoute', 'ngCookies', 'base64']);
+
 
 //// Services
 require('./services/rest_resource.js')(usersApp);
+require('./services/auth.js'         )(usersApp);
 
-
-// Load controllers & pass in app for loading into
-// OLD way: usersApp.controller('usersController', ['$scope', usersController]);
-// NEW way: (do that in the module)
 //// Controllers
 require('./users/controllers/users_controller.js')(usersApp);
-
+require('./auth/controllers/auth_controller.js'  )(usersApp);
 
 //// Directives
 require('./directives/page_title_directive.js'        )(usersApp);
@@ -22,8 +25,29 @@ require('./directives/main_heading_directive.js'      )(usersApp);
 require('./directives/sub_heading_directive.js'       )(usersApp);
 require('./directives/users_form_directive.js'        )(usersApp);
 require('./directives/delete_user_button_directive.js')(usersApp);
+require('./directives/logout_directive.js'            )(usersApp);
 
 
+// Custom View Routes
+usersApp.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+    .when('/users', {
+      templateUrl: 'templates/views/users_index.html',
+      controller:  'usersController'
+    })
+    .when('/signup', {
+      templateUrl: 'templates/views/create_user.html',
+      controller: 'authController'
+    })
+    .when('/signin', {
+      templateUrl: 'templates/views/signin.html',
+      controller: 'authController'
+     })
+    .when('/', {
+      redirectTo: '/signin'           // if not logged in, /users redirects to /login
+    })
+    .otherwise({ redirectTo: '/signup' })  // if route unknown, direct home (=> or login)
+}]);
 
 
 

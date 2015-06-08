@@ -36,7 +36,7 @@ module.exports = function(grunt) {
                ],
       options: {
         requireCurlyBraces: [false],
-        verbose: true
+        verbose: false
       }
     },
     jshint: {
